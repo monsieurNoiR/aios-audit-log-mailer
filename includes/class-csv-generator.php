@@ -38,9 +38,11 @@ class AIOS_ALM_CSV_Generator {
 		}
 
 		// ログデータの取得（全件取得してPHP側でフィルタリング）
+		// Note: $wpdb->prepare() doesn't support table names in placeholders.
+		// Table name is safely escaped using esc_sql() before use.
 		$table_name_escaped = esc_sql( $table_name );
-		$query = "SELECT * FROM `{$table_name_escaped}` ORDER BY id DESC";
-		$all_logs = $wpdb->get_results( $query, ARRAY_A );
+		$query = "SELECT * FROM `{$table_name_escaped}` ORDER BY id DESC"; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$all_logs = $wpdb->get_results( $query, ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		if ( empty( $all_logs ) ) {
 			return new WP_Error(
@@ -256,12 +258,21 @@ class AIOS_ALM_CSV_Generator {
 	 * @return string CSV形式の文字列
 	 */
 	private function array_to_csv_line( $data ) {
-		$fp = fopen( 'php://temp', 'r+' );
-		fputcsv( $fp, $data );
-		rewind( $fp );
-		$line = stream_get_contents( $fp );
-		fclose( $fp );
-		return $line;
+		// 各フィールドをエスケープ
+		$escaped_data = array_map(
+			function( $field ) {
+				// ダブルクォートをエスケープ
+				$field = str_replace( '"', '""', (string) $field );
+				// カンマ、改行、ダブルクォートが含まれる場合は囲む
+				if ( strpos( $field, ',' ) !== false || strpos( $field, "\n" ) !== false || strpos( $field, '"' ) !== false ) {
+					return '"' . $field . '"';
+				}
+				return $field;
+			},
+			$data
+		);
+
+		return implode( ',', $escaped_data ) . "\n";
 	}
 
 	/**

@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: All in One Security Audit Log Mailer
- * Plugin URI: https://github.com/yourusername/aios-audit-log-mailer
+ * Plugin URI: https://github.com/monsieurNoiR/aios-audit-log-mailer
  * Description: All in One Security & Firewallの監査ログを月次で自動エクスポート・メール送信するプラグイン
  * Version: 1.0.0
- * Author: Your Name
- * Author URI: https://yourwebsite.com
+ * Author: studioNoiR
+ * Author URI: https://studionoir.net
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: aios-audit-log-mailer
@@ -75,9 +75,6 @@ class AIOS_Audit_Log_Mailer {
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
-		// 翻訳ファイルの読み込み
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-
 		// Cronイベントのフック
 		add_action( self::CRON_HOOK, array( $this, 'execute_export_and_send' ) );
 
@@ -88,13 +85,6 @@ class AIOS_Audit_Log_Mailer {
 
 		// 管理画面通知
 		add_action( 'admin_notices', array( $this, 'check_dependencies' ) );
-	}
-
-	/**
-	 * テキストドメインの読み込み
-	 */
-	public function load_textdomain() {
-		load_plugin_textdomain( 'aios-audit-log-mailer', false, dirname( AIOS_ALM_PLUGIN_BASENAME ) . '/languages' );
 	}
 
 	/**

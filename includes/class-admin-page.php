@@ -294,7 +294,8 @@ class AIOS_ALM_Admin_Page {
 						$table_name = $wpdb->prefix . 'aiowps_audit_log';
 						if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) ) === $table_name ) {
 							$table_name_escaped = esc_sql( $table_name );
-						$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name_escaped}`" );
+							// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name is safely escaped using esc_sql()
+							$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name_escaped}`" );
 							echo '<span style="color: green;">✓ ' . esc_html__( '存在', 'aios-audit-log-mailer' ) . '</span>';
 							echo ' (' . esc_html( number_format( $count ) ) . ' ' . esc_html__( '件のログ', 'aios-audit-log-mailer' ) . ')';
 						} else {
