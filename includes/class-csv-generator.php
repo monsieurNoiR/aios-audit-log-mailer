@@ -96,21 +96,19 @@ class AIOS_ALM_CSV_Generator {
 		}
 
 		// CSVファイル名
-		$filename = 'audit-log-' . date( 'Y-m-d-His' ) . '.csv';
+		$filename = 'audit-log-' . current_time( 'Y-m-d-His' ) . '.csv';
 		$filename = sanitize_file_name( $filename );
 		$filepath = $temp_dir . '/' . $filename;
 
-		// CSVファイルの作成
-		$file = fopen( $filepath, 'w' );
-		if ( ! $file ) {
-			return new WP_Error(
-				'file_creation_failed',
-				__( 'CSVファイルの作成に失敗しました。', 'aios-audit-log-mailer' )
-			);
+		// WP_Filesystemの初期化
+		global $wp_filesystem;
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
+		WP_Filesystem();
 
 		// BOM（Byte Order Mark）を追加してExcelで文字化け防止
-		fputs( $file, "\xEF\xBB\xBF" );
+		$csv_content = "\xEF\xBB\xBF";
 
 		// CSVヘッダー
 		$header = array(
@@ -122,7 +120,7 @@ class AIOS_ALM_CSV_Generator {
 			__( 'イベントタイプ', 'aios-audit-log-mailer' ),
 			__( '詳細', 'aios-audit-log-mailer' ),
 		);
-		fputcsv( $file, $header );
+		$csv_content .= $this->array_to_csv_line( $header );
 
 		// データ行の追加
 		foreach ( $logs as $log ) {
@@ -143,10 +141,16 @@ class AIOS_ALM_CSV_Generator {
 				isset( $log['event_type'] ) ? $log['event_type'] : ( isset( $log['Event'] ) ? $log['Event'] : '' ),
 				isset( $log['details'] ) ? $this->format_details( $log['details'] ) : ( isset( $log['Details'] ) ? $log['Details'] : '' ),
 			);
-			fputcsv( $file, $row );
+			$csv_content .= $this->array_to_csv_line( $row );
 		}
 
-		fclose( $file );
+		// ファイルに書き込み
+		if ( ! $wp_filesystem->put_contents( $filepath, $csv_content, FS_CHMOD_FILE ) ) {
+			return new WP_Error(
+				'file_creation_failed',
+				__( 'CSVファイルの作成に失敗しました。', 'aios-audit-log-mailer' )
+			);
+		}
 
 		return $filepath;
 	}
@@ -200,7 +204,7 @@ class AIOS_ALM_CSV_Generator {
 	 */
 	private function format_datetime( $timestamp ) {
 		if ( is_numeric( $timestamp ) ) {
-			return date( 'Y-m-d H:i:s', $timestamp );
+			return date_i18n( 'Y-m-d H:i:s', $timestamp );
 		}
 		return $timestamp;
 	}
@@ -243,6 +247,21 @@ class AIOS_ALM_CSV_Generator {
 		}
 
 		return $details;
+	}
+
+	/**
+	 * 配列をCSV行に変換
+	 *
+	 * @param array $data 変換するデータ配列
+	 * @return string CSV形式の文字列
+	 */
+	private function array_to_csv_line( $data ) {
+		$fp = fopen( 'php://temp', 'r+' );
+		fputcsv( $fp, $data );
+		rewind( $fp );
+		$line = stream_get_contents( $fp );
+		fclose( $fp );
+		return $line;
 	}
 
 	/**

@@ -165,11 +165,11 @@ class AIOS_Audit_Log_Mailer {
 		$schedule_minute = isset( $settings['schedule_minute'] ) ? intval( $settings['schedule_minute'] ) : 0;
 
 		// 今月の指定日時
-		$year  = intval( date( 'Y' ) );
-		$month = intval( date( 'm' ) );
+		$year  = intval( current_time( 'Y' ) );
+		$month = intval( current_time( 'm' ) );
 
 		// 指定日が今月に存在するかチェック
-		$days_in_month = intval( date( 't', mktime( 0, 0, 0, $month, 1, $year ) ) );
+		$days_in_month = intval( date_i18n( 't', mktime( 0, 0, 0, $month, 1, $year ) ) );
 		$actual_day    = min( $schedule_day, $days_in_month );
 
 		$schedule_time = mktime( $schedule_hour, $schedule_minute, 0, $month, $actual_day, $year );
@@ -183,7 +183,7 @@ class AIOS_Audit_Log_Mailer {
 			}
 
 			// 来月の日数をチェック
-			$days_in_next_month = intval( date( 't', mktime( 0, 0, 0, $month, 1, $year ) ) );
+			$days_in_next_month = intval( date_i18n( 't', mktime( 0, 0, 0, $month, 1, $year ) ) );
 			$actual_day         = min( $schedule_day, $days_in_next_month );
 
 			$schedule_time = mktime( $schedule_hour, $schedule_minute, 0, $month, $actual_day, $year );
@@ -225,7 +225,7 @@ class AIOS_Audit_Log_Mailer {
 			$real_temp_dir = realpath( $temp_dir );
 
 			if ( $real_csv_path && $real_temp_dir && strpos( $real_csv_path, $real_temp_dir ) === 0 ) {
-				if ( ! unlink( $csv_file ) ) {
+				if ( ! wp_delete_file( $csv_file ) ) {
 					error_log( 'AIOS ALM: Failed to delete temporary file: ' . $csv_file );
 				}
 			}

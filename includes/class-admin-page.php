@@ -123,10 +123,10 @@ class AIOS_ALM_Admin_Page {
 								$schedule_day = isset( $settings['schedule_day'] ) ? intval( $settings['schedule_day'] ) : 1;
 								for ( $i = 1; $i <= 28; $i++ ) {
 									printf(
-										'<option value="%d" %s>%d日</option>',
-										$i,
+										'<option value="%s" %s>%s</option>',
+										esc_attr( $i ),
 										selected( $schedule_day, $i, false ),
-										$i
+										esc_html( $i . '日' )
 									);
 								}
 								?>
@@ -148,10 +148,10 @@ class AIOS_ALM_Admin_Page {
 								<?php
 								for ( $i = 0; $i < 24; $i++ ) {
 									printf(
-										'<option value="%d" %s>%02d</option>',
-										$i,
+										'<option value="%s" %s>%s</option>',
+										esc_attr( $i ),
 										selected( $schedule_hour, $i, false ),
-										$i
+										esc_html( sprintf( '%02d', $i ) )
 									);
 								}
 								?>
@@ -161,10 +161,10 @@ class AIOS_ALM_Admin_Page {
 								<?php
 								for ( $i = 0; $i < 60; $i += 5 ) {
 									printf(
-										'<option value="%d" %s>%02d</option>',
-										$i,
+										'<option value="%s" %s>%s</option>',
+										esc_attr( $i ),
 										selected( $schedule_minute, $i, false ),
-										$i
+										esc_html( sprintf( '%02d', $i ) )
 									);
 								}
 								?>
@@ -379,19 +379,19 @@ class AIOS_ALM_Admin_Page {
 	public function handle_manual_export() {
 		// 権限チェック
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( __( 'このページにアクセスする権限がありません。', 'aios-audit-log-mailer' ) );
+			wp_die( esc_html__( 'このページにアクセスする権限がありません。', 'aios-audit-log-mailer' ) );
 		}
 
 		// Nonceチェック
-		if ( ! isset( $_POST['aios_alm_nonce'] ) || ! wp_verify_nonce( $_POST['aios_alm_nonce'], 'aios_alm_manual_export' ) ) {
-			wp_die( __( '不正なリクエストです。', 'aios-audit-log-mailer' ) );
+		if ( ! isset( $_POST['aios_alm_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['aios_alm_nonce'] ) ), 'aios_alm_manual_export' ) ) {
+			wp_die( esc_html__( '不正なリクエストです。', 'aios-audit-log-mailer' ) );
 		}
 
 		// エクスポートとメール送信を実行
 		AIOS_Audit_Log_Mailer::get_instance()->execute_export_and_send();
 
 		// リダイレクト
-		wp_redirect( add_query_arg(
+		wp_safe_redirect( add_query_arg(
 			array(
 				'page'    => 'aios-audit-log-mailer',
 				'message' => 'manual_export_done',

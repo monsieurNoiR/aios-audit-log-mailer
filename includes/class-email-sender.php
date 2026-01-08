@@ -43,10 +43,11 @@ class AIOS_ALM_Email_Sender {
 		}
 
 		// メール件名
+		/* translators: 1: Site name, 2: Report month */
 		$subject = sprintf(
-			__( '[%s] All in One Security 監査ログレポート - %s', 'aios-audit-log-mailer' ),
+			__( '[%1$s] All in One Security 監査ログレポート - %2$s', 'aios-audit-log-mailer' ),
 			sanitize_text_field( get_bloginfo( 'name' ) ),
-			date( 'Y年m月' )
+			date_i18n( 'Y年m月', current_time( 'timestamp' ) )
 		);
 
 		// 改行文字を除去してメールヘッダーインジェクションを防止
@@ -232,20 +233,19 @@ class AIOS_ALM_Email_Sender {
 	 * @return int 行数
 	 */
 	private function count_csv_lines( $csv_file_path ) {
-		$count = 0;
-		$file  = fopen( $csv_file_path, 'r' );
+		global $wp_filesystem;
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		WP_Filesystem();
 
-		if ( $file ) {
-			// ヘッダー行をスキップ
-			fgets( $file );
-
-			while ( fgets( $file ) !== false ) {
-				$count++;
-			}
-
-			fclose( $file );
+		$content = $wp_filesystem->get_contents( $csv_file_path );
+		if ( ! $content ) {
+			return 0;
 		}
 
-		return $count;
+		$lines = explode( "\n", $content );
+		// ヘッダー行と空行を除外
+		return max( 0, count( array_filter( $lines ) ) - 1 );
 	}
 }
