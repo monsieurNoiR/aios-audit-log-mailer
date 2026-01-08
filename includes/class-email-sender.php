@@ -43,7 +43,7 @@ class AIOS_ALM_Email_Sender {
 		}
 
 		// メール件名
-		/* translators: 1: Site name, 2: Report month (e.g. 2025年1月) */
+		/* translators: %1$s: Site name, %2$s: Report month */
 		$subject = sprintf(
 			__( '[%1$s] All in One Security 監査ログレポート - %2$s', 'aios-audit-log-mailer' ),
 			sanitize_text_field( get_bloginfo( 'name' ) ),
