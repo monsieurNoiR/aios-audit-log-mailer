@@ -217,7 +217,18 @@ class AIOS_Audit_Log_Mailer {
 
 		// CSVファイルの削除
 		if ( file_exists( $csv_file ) ) {
-			@unlink( $csv_file );
+			$upload_dir = wp_upload_dir();
+			$temp_dir = $upload_dir['basedir'] . '/aios-alm-temp';
+
+			// パスが想定ディレクトリ内にあることを確認
+			$real_csv_path = realpath( $csv_file );
+			$real_temp_dir = realpath( $temp_dir );
+
+			if ( $real_csv_path && $real_temp_dir && strpos( $real_csv_path, $real_temp_dir ) === 0 ) {
+				if ( ! unlink( $csv_file ) ) {
+					error_log( 'AIOS ALM: Failed to delete temporary file: ' . $csv_file );
+				}
+			}
 		}
 
 		// 最終実行情報を更新
@@ -250,6 +261,11 @@ class AIOS_Audit_Log_Mailer {
 	 * All in One Securityプラグインの依存関係をチェック
 	 */
 	public function check_dependencies() {
+		// plugin.phpの読み込み
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
 		// All in One Securityプラグインがアクティブかチェック
 		if ( ! is_plugin_active( 'all-in-one-wp-security-and-firewall/wp-security.php' ) &&
 		     ! is_plugin_active( 'all-in-one-wp-security/wp-security.php' ) ) {

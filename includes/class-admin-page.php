@@ -274,6 +274,10 @@ class AIOS_ALM_Admin_Page {
 					<th scope="row"><?php esc_html_e( 'All in One Security', 'aios-audit-log-mailer' ); ?></th>
 					<td>
 						<?php
+						// plugin.phpの読み込み
+						if ( ! function_exists( 'is_plugin_active' ) ) {
+							require_once ABSPATH . 'wp-admin/includes/plugin.php';
+						}
 						if ( is_plugin_active( 'all-in-one-wp-security-and-firewall/wp-security.php' ) || is_plugin_active( 'all-in-one-wp-security/wp-security.php' ) ) {
 							echo '<span style="color: green;">✓ ' . esc_html__( '有効', 'aios-audit-log-mailer' ) . '</span>';
 						} else {
@@ -289,7 +293,8 @@ class AIOS_ALM_Admin_Page {
 						global $wpdb;
 						$table_name = $wpdb->prefix . 'aiowps_audit_log';
 						if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) ) === $table_name ) {
-							$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$wpdb->prefix}aiowps_audit_log`" );
+							$table_name_escaped = esc_sql( $table_name );
+						$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name_escaped}`" );
 							echo '<span style="color: green;">✓ ' . esc_html__( '存在', 'aios-audit-log-mailer' ) . '</span>';
 							echo ' (' . esc_html( number_format( $count ) ) . ' ' . esc_html__( '件のログ', 'aios-audit-log-mailer' ) . ')';
 						} else {

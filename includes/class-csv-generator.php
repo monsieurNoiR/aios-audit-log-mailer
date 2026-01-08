@@ -38,7 +38,8 @@ class AIOS_ALM_CSV_Generator {
 		}
 
 		// ログデータの取得（全件取得してPHP側でフィルタリング）
-		$query = "SELECT * FROM `{$wpdb->prefix}aiowps_audit_log` ORDER BY id DESC";
+		$table_name_escaped = esc_sql( $table_name );
+		$query = "SELECT * FROM `{$table_name_escaped}` ORDER BY id DESC";
 		$all_logs = $wpdb->get_results( $query, ARRAY_A );
 
 		if ( empty( $all_logs ) ) {
@@ -96,6 +97,7 @@ class AIOS_ALM_CSV_Generator {
 
 		// CSVファイル名
 		$filename = 'audit-log-' . date( 'Y-m-d-His' ) . '.csv';
+		$filename = sanitize_file_name( $filename );
 		$filepath = $temp_dir . '/' . $filename;
 
 		// CSVファイルの作成
@@ -252,16 +254,20 @@ class AIOS_ALM_CSV_Generator {
 		$upload_dir = wp_upload_dir();
 		$temp_dir   = $upload_dir['basedir'] . '/aios-alm-temp';
 
-		if ( ! file_exists( $temp_dir ) ) {
+		if ( ! file_exists( $temp_dir ) || ! is_dir( $temp_dir ) ) {
 			return;
 		}
 
 		$files = glob( $temp_dir . '/audit-log-*.csv' );
-		$now   = time();
+		if ( $files === false ) {
+			return;
+		}
+
+		$now = time();
 
 		foreach ( $files as $file ) {
 			if ( is_file( $file ) && ( $now - filemtime( $file ) > 7 * DAY_IN_SECONDS ) ) {
-				unlink( $file );
+				wp_delete_file( $file ); // WordPressの関数を使用
 			}
 		}
 	}

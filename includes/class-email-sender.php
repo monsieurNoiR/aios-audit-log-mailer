@@ -45,9 +45,12 @@ class AIOS_ALM_Email_Sender {
 		// メール件名
 		$subject = sprintf(
 			__( '[%s] All in One Security 監査ログレポート - %s', 'aios-audit-log-mailer' ),
-			get_bloginfo( 'name' ),
+			sanitize_text_field( get_bloginfo( 'name' ) ),
 			date( 'Y年m月' )
 		);
+
+		// 改行文字を除去してメールヘッダーインジェクションを防止
+		$subject = str_replace( array( "\r", "\n", "%0a", "%0d" ), '', $subject );
 
 		// メール本文
 		$message = $this->generate_email_body( $csv_file_path );
