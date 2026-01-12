@@ -50,8 +50,8 @@ class AIOS_ALM_Admin_Page {
 	 */
 	public function add_admin_menu() {
 		add_options_page(
-			__( 'AIOS監査ログメーラー設定', 'audit-log-mailer-for-allinonesecurity' ),
-			__( 'AIOS監査ログメーラー', 'audit-log-mailer-for-allinonesecurity' ),
+			__( 'AIOS Audit Log Mailer Settings', 'audit-log-mailer-for-allinonesecurity' ),
+			__( 'AIOS Audit Log Mailer', 'audit-log-mailer-for-allinonesecurity' ),
 			'manage_options',
 			'audit-log-mailer-for-allinonesecurity',
 			array( $this, 'render_settings_page' )
