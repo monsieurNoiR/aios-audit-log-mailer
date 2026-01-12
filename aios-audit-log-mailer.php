@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: All in One Security Audit Log Mailer
+ * Plugin Name: Audit Log Mailer for All in One Security
  * Plugin URI: https://github.com/monsieurNoiR/aios-audit-log-mailer
  * Description: All in One Security & Firewallの監査ログを月次で自動エクスポート・メール送信するプラグイン
  * Version: 1.0.0
  * Author: studioNoiR
- * Author URI: https://studionoir.net
+ * Author URI: https://studio-noir.jp
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: aios-audit-log-mailer
+ * Text Domain: audit-log-mailer-for-allinonesecurity
  * Requires at least: 5.0
  * Requires PHP: 7.2
  */
@@ -226,7 +226,7 @@ class AIOS_Audit_Log_Mailer {
 			error_log( 'AIOS Audit Log Mailer: Email sending failed - ' . $result->get_error_message() );
 			$this->update_last_execution( false, $result->get_error_message() );
 		} else {
-			$this->update_last_execution( true, __( 'Successfully sent', 'aios-audit-log-mailer' ) );
+			$this->update_last_execution( true, __( 'Successfully sent', 'audit-log-mailer-for-allinonesecurity' ) );
 		}
 
 		// 次回のスケジュールを再設定
@@ -262,8 +262,8 @@ class AIOS_Audit_Log_Mailer {
 			?>
 			<div class="notice notice-error">
 				<p>
-					<strong><?php esc_html_e( 'AIOS Audit Log Mailer:', 'aios-audit-log-mailer' ); ?></strong>
-					<?php esc_html_e( 'このプラグインを使用するには、All in One Security & Firewallプラグインがインストールされ、有効化されている必要があります。', 'aios-audit-log-mailer' ); ?>
+					<strong><?php esc_html_e( 'AIOS Audit Log Mailer:', 'audit-log-mailer-for-allinonesecurity' ); ?></strong>
+					<?php esc_html_e( 'このプラグインを使用するには、All in One Security & Firewallプラグインがインストールされ、有効化されている必要があります。', 'audit-log-mailer-for-allinonesecurity' ); ?>
 				</p>
 			</div>
 			<?php
@@ -276,8 +276,8 @@ class AIOS_Audit_Log_Mailer {
 			?>
 			<div class="notice notice-warning">
 				<p>
-					<strong><?php esc_html_e( 'AIOS Audit Log Mailer:', 'aios-audit-log-mailer' ); ?></strong>
-					<?php esc_html_e( '監査ログテーブルが見つかりません。All in One Securityプラグインで監査ログ機能が有効になっているか確認してください。', 'aios-audit-log-mailer' ); ?>
+					<strong><?php esc_html_e( 'AIOS Audit Log Mailer:', 'audit-log-mailer-for-allinonesecurity' ); ?></strong>
+					<?php esc_html_e( '監査ログテーブルが見つかりません。All in One Securityプラグインで監査ログ機能が有効になっているか確認してください。', 'audit-log-mailer-for-allinonesecurity' ); ?>
 				</p>
 			</div>
 			<?php

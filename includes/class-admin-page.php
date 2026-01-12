@@ -50,10 +50,10 @@ class AIOS_ALM_Admin_Page {
 	 */
 	public function add_admin_menu() {
 		add_options_page(
-			__( 'AIOS監査ログメーラー設定', 'aios-audit-log-mailer' ),
-			__( 'AIOS監査ログメーラー', 'aios-audit-log-mailer' ),
+			__( 'AIOS監査ログメーラー設定', 'audit-log-mailer-for-allinonesecurity' ),
+			__( 'AIOS監査ログメーラー', 'audit-log-mailer-for-allinonesecurity' ),
 			'manage_options',
-			'aios-audit-log-mailer',
+			'audit-log-mailer-for-allinonesecurity',
 			array( $this, 'render_settings_page' )
 		);
 	}
@@ -74,7 +74,7 @@ class AIOS_ALM_Admin_Page {
 	 */
 	public function render_settings_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( __( 'このページにアクセスする権限がありません。', 'aios-audit-log-mailer' ) );
+			wp_die( __( 'このページにアクセスする権限がありません。', 'audit-log-mailer-for-allinonesecurity' ) );
 		}
 
 		$settings = get_option( AIOS_Audit_Log_Mailer::OPTION_NAME );
@@ -95,27 +95,27 @@ class AIOS_ALM_Admin_Page {
 				<table class="form-table">
 					<tr>
 						<th scope="row">
-							<label for="enabled"><?php esc_html_e( '自動送信を有効化', 'aios-audit-log-mailer' ); ?></label>
+							<label for="enabled"><?php esc_html_e( '自動送信を有効化', 'audit-log-mailer-for-allinonesecurity' ); ?></label>
 						</th>
 						<td>
 							<input type="checkbox" id="enabled" name="<?php echo esc_attr( AIOS_Audit_Log_Mailer::OPTION_NAME ); ?>[enabled]" value="1" <?php checked( isset( $settings['enabled'] ) && $settings['enabled'], true ); ?>>
-							<p class="description"><?php esc_html_e( '月次での自動送信を有効にします。', 'aios-audit-log-mailer' ); ?></p>
+							<p class="description"><?php esc_html_e( '月次での自動送信を有効にします。', 'audit-log-mailer-for-allinonesecurity' ); ?></p>
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="row">
-							<label for="email_addresses"><?php esc_html_e( '送信先メールアドレス', 'aios-audit-log-mailer' ); ?></label>
+							<label for="email_addresses"><?php esc_html_e( '送信先メールアドレス', 'audit-log-mailer-for-allinonesecurity' ); ?></label>
 						</th>
 						<td>
 							<input type="text" id="email_addresses" name="<?php echo esc_attr( AIOS_Audit_Log_Mailer::OPTION_NAME ); ?>[email_addresses]" value="<?php echo esc_attr( isset( $settings['email_addresses'] ) ? $settings['email_addresses'] : '' ); ?>" class="regular-text">
-							<p class="description"><?php esc_html_e( '複数のメールアドレスを指定する場合は、カンマ区切りで入力してください。例: mail1@example.com, mail2@example.com', 'aios-audit-log-mailer' ); ?></p>
+							<p class="description"><?php esc_html_e( '複数のメールアドレスを指定する場合は、カンマ区切りで入力してください。例: mail1@example.com, mail2@example.com', 'audit-log-mailer-for-allinonesecurity' ); ?></p>
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="row">
-							<label for="schedule_day"><?php esc_html_e( '実行日', 'aios-audit-log-mailer' ); ?></label>
+							<label for="schedule_day"><?php esc_html_e( '実行日', 'audit-log-mailer-for-allinonesecurity' ); ?></label>
 						</th>
 						<td>
 							<select id="schedule_day" name="<?php echo esc_attr( AIOS_Audit_Log_Mailer::OPTION_NAME ); ?>[schedule_day]">
@@ -131,13 +131,13 @@ class AIOS_ALM_Admin_Page {
 								}
 								?>
 							</select>
-							<p class="description"><?php esc_html_e( '毎月何日に実行するか設定します。（1〜28日）', 'aios-audit-log-mailer' ); ?></p>
+							<p class="description"><?php esc_html_e( '毎月何日に実行するか設定します。（1〜28日）', 'audit-log-mailer-for-allinonesecurity' ); ?></p>
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="row">
-							<label for="schedule_time"><?php esc_html_e( '実行時刻', 'aios-audit-log-mailer' ); ?></label>
+							<label for="schedule_time"><?php esc_html_e( '実行時刻', 'audit-log-mailer-for-allinonesecurity' ); ?></label>
 						</th>
 						<td>
 							<?php
@@ -169,71 +169,71 @@ class AIOS_ALM_Admin_Page {
 								}
 								?>
 							</select>
-							<p class="description"><?php esc_html_e( '実行する時刻を設定します。（サーバー時刻）', 'aios-audit-log-mailer' ); ?></p>
+							<p class="description"><?php esc_html_e( '実行する時刻を設定します。（サーバー時刻）', 'audit-log-mailer-for-allinonesecurity' ); ?></p>
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="row">
-							<label for="export_days"><?php esc_html_e( 'エクスポート対象期間', 'aios-audit-log-mailer' ); ?></label>
+							<label for="export_days"><?php esc_html_e( 'エクスポート対象期間', 'audit-log-mailer-for-allinonesecurity' ); ?></label>
 						</th>
 						<td>
 							<input type="number" id="export_days" name="<?php echo esc_attr( AIOS_Audit_Log_Mailer::OPTION_NAME ); ?>[export_days]" value="<?php echo esc_attr( isset( $settings['export_days'] ) ? $settings['export_days'] : 30 ); ?>" min="1" max="365" class="small-text">
 							日
-							<p class="description"><?php esc_html_e( '過去何日分のログをエクスポートするか設定します。（1〜365日）', 'aios-audit-log-mailer' ); ?></p>
+							<p class="description"><?php esc_html_e( '過去何日分のログをエクスポートするか設定します。（1〜365日）', 'audit-log-mailer-for-allinonesecurity' ); ?></p>
 						</td>
 					</tr>
 				</table>
 
-				<?php submit_button( __( '設定を保存', 'aios-audit-log-mailer' ) ); ?>
+				<?php submit_button( __( '設定を保存', 'audit-log-mailer-for-allinonesecurity' ) ); ?>
 			</form>
 
 			<hr>
 
-			<h2><?php esc_html_e( '実行状況', 'aios-audit-log-mailer' ); ?></h2>
+			<h2><?php esc_html_e( '実行状況', 'audit-log-mailer-for-allinonesecurity' ); ?></h2>
 			<table class="form-table">
 				<tr>
-					<th scope="row"><?php esc_html_e( '次回実行予定', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( '次回実行予定', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td>
 						<?php
 						if ( $next_scheduled ) {
 							echo esc_html( date_i18n( 'Y年m月d日 H:i:s', $next_scheduled ) );
 						} else {
-							echo '<span style="color: #999;">' . esc_html__( 'スケジュールされていません', 'aios-audit-log-mailer' ) . '</span>';
+							echo '<span style="color: #999;">' . esc_html__( 'スケジュールされていません', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
 						}
 						?>
 					</td>
 				</tr>
 
 				<tr>
-					<th scope="row"><?php esc_html_e( '最終実行日時', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( '最終実行日時', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td>
 						<?php
 						if ( $last_execution && isset( $last_execution['time'] ) ) {
 							echo esc_html( $last_execution['time'] );
 						} else {
-							echo '<span style="color: #999;">' . esc_html__( 'まだ実行されていません', 'aios-audit-log-mailer' ) . '</span>';
+							echo '<span style="color: #999;">' . esc_html__( 'まだ実行されていません', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
 						}
 						?>
 					</td>
 				</tr>
 
 				<tr>
-					<th scope="row"><?php esc_html_e( '最終実行結果', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( '最終実行結果', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td>
 						<?php
 						if ( $last_execution && isset( $last_execution['success'] ) ) {
 							if ( $last_execution['success'] ) {
-								echo '<span style="color: green;">✓ ' . esc_html__( '成功', 'aios-audit-log-mailer' ) . '</span>';
+								echo '<span style="color: green;">✓ ' . esc_html__( '成功', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
 							} else {
-								echo '<span style="color: red;">✗ ' . esc_html__( '失敗', 'aios-audit-log-mailer' ) . '</span>';
+								echo '<span style="color: red;">✗ ' . esc_html__( '失敗', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
 							}
 
 							if ( isset( $last_execution['message'] ) ) {
 								echo '<br><span style="color: #666;">' . esc_html( $last_execution['message'] ) . '</span>';
 							}
 						} else {
-							echo '<span style="color: #999;">' . esc_html__( 'まだ実行されていません', 'aios-audit-log-mailer' ) . '</span>';
+							echo '<span style="color: #999;">' . esc_html__( 'まだ実行されていません', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
 						}
 						?>
 					</td>
@@ -242,36 +242,36 @@ class AIOS_ALM_Admin_Page {
 
 			<hr>
 
-			<h2><?php esc_html_e( '手動実行', 'aios-audit-log-mailer' ); ?></h2>
-			<p><?php esc_html_e( 'テスト目的で手動でエクスポートとメール送信を実行できます。', 'aios-audit-log-mailer' ); ?></p>
+			<h2><?php esc_html_e( '手動実行', 'audit-log-mailer-for-allinonesecurity' ); ?></h2>
+			<p><?php esc_html_e( 'テスト目的で手動でエクスポートとメール送信を実行できます。', 'audit-log-mailer-for-allinonesecurity' ); ?></p>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="aios_alm_manual_export">
 				<?php wp_nonce_field( 'aios_alm_manual_export', 'aios_alm_nonce' ); ?>
-				<?php submit_button( __( '今すぐ実行', 'aios-audit-log-mailer' ), 'secondary', 'submit', false ); ?>
+				<?php submit_button( __( '今すぐ実行', 'audit-log-mailer-for-allinonesecurity' ), 'secondary', 'submit', false ); ?>
 			</form>
 
 			<hr>
 
-			<h2><?php esc_html_e( 'システム情報', 'aios-audit-log-mailer' ); ?></h2>
+			<h2><?php esc_html_e( 'システム情報', 'audit-log-mailer-for-allinonesecurity' ); ?></h2>
 			<table class="form-table">
 				<tr>
-					<th scope="row"><?php esc_html_e( 'プラグインバージョン', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'プラグインバージョン', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td><?php echo esc_html( AIOS_ALM_VERSION ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'WordPressバージョン', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'WordPressバージョン', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td><?php echo esc_html( get_bloginfo( 'version' ) ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'PHPバージョン', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'PHPバージョン', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td><?php echo esc_html( phpversion() ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'サーバー時刻', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'サーバー時刻', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td><?php echo esc_html( current_time( 'Y-m-d H:i:s' ) ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'All in One Security', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'All in One Security', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td>
 						<?php
 						// plugin.phpの読み込み
@@ -279,15 +279,15 @@ class AIOS_ALM_Admin_Page {
 							require_once ABSPATH . 'wp-admin/includes/plugin.php';
 						}
 						if ( is_plugin_active( 'all-in-one-wp-security-and-firewall/wp-security.php' ) || is_plugin_active( 'all-in-one-wp-security/wp-security.php' ) ) {
-							echo '<span style="color: green;">✓ ' . esc_html__( '有効', 'aios-audit-log-mailer' ) . '</span>';
+							echo '<span style="color: green;">✓ ' . esc_html__( '有効', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
 						} else {
-							echo '<span style="color: red;">✗ ' . esc_html__( '無効', 'aios-audit-log-mailer' ) . '</span>';
+							echo '<span style="color: red;">✗ ' . esc_html__( '無効', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
 						}
 						?>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( '監査ログテーブル', 'aios-audit-log-mailer' ); ?></th>
+					<th scope="row"><?php esc_html_e( '監査ログテーブル', 'audit-log-mailer-for-allinonesecurity' ); ?></th>
 					<td>
 						<?php
 						global $wpdb;
@@ -296,10 +296,10 @@ class AIOS_ALM_Admin_Page {
 							$table_name_escaped = esc_sql( $table_name );
 							// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name is safely escaped using esc_sql()
 							$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name_escaped}`" );
-							echo '<span style="color: green;">✓ ' . esc_html__( '存在', 'aios-audit-log-mailer' ) . '</span>';
-							echo ' (' . esc_html( number_format( $count ) ) . ' ' . esc_html__( '件のログ', 'aios-audit-log-mailer' ) . ')';
+							echo '<span style="color: green;">✓ ' . esc_html__( '存在', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
+							echo ' (' . esc_html( number_format( $count ) ) . ' ' . esc_html__( '件のログ', 'audit-log-mailer-for-allinonesecurity' ) . ')';
 						} else {
-							echo '<span style="color: red;">✗ ' . esc_html__( '存在しません', 'aios-audit-log-mailer' ) . '</span>';
+							echo '<span style="color: red;">✗ ' . esc_html__( '存在しません', 'audit-log-mailer-for-allinonesecurity' ) . '</span>';
 						}
 						?>
 					</td>
@@ -336,7 +336,7 @@ class AIOS_ALM_Admin_Page {
 				add_settings_error(
 					AIOS_Audit_Log_Mailer::OPTION_NAME,
 					'invalid_email',
-					__( '有効なメールアドレスを入力してください。', 'aios-audit-log-mailer' ),
+					__( '有効なメールアドレスを入力してください。', 'audit-log-mailer-for-allinonesecurity' ),
 					'error'
 				);
 				$validated['email_addresses'] = get_option( 'admin_email' );
@@ -380,12 +380,12 @@ class AIOS_ALM_Admin_Page {
 	public function handle_manual_export() {
 		// 権限チェック
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'このページにアクセスする権限がありません。', 'aios-audit-log-mailer' ) );
+			wp_die( esc_html__( 'このページにアクセスする権限がありません。', 'audit-log-mailer-for-allinonesecurity' ) );
 		}
 
 		// Nonceチェック
 		if ( ! isset( $_POST['aios_alm_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['aios_alm_nonce'] ) ), 'aios_alm_manual_export' ) ) {
-			wp_die( esc_html__( '不正なリクエストです。', 'aios-audit-log-mailer' ) );
+			wp_die( esc_html__( '不正なリクエストです。', 'audit-log-mailer-for-allinonesecurity' ) );
 		}
 
 		// エクスポートとメール送信を実行
@@ -394,7 +394,7 @@ class AIOS_ALM_Admin_Page {
 		// リダイレクト
 		wp_safe_redirect( add_query_arg(
 			array(
-				'page'    => 'aios-audit-log-mailer',
+				'page'    => 'audit-log-mailer-for-allinonesecurity',
 				'message' => 'manual_export_done',
 			),
 			admin_url( 'options-general.php' )

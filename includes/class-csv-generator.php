@@ -33,7 +33,7 @@ class AIOS_ALM_CSV_Generator {
 		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) ) !== $table_name ) {
 			return new WP_Error(
 				'table_not_found',
-				__( '監査ログテーブルが見つかりません。', 'aios-audit-log-mailer' )
+				__( '監査ログテーブルが見つかりません。', 'audit-log-mailer-for-allinonesecurity' )
 			);
 		}
 
@@ -47,7 +47,7 @@ class AIOS_ALM_CSV_Generator {
 		if ( empty( $all_logs ) ) {
 			return new WP_Error(
 				'no_data',
-				__( '監査ログが見つかりませんでした。', 'aios-audit-log-mailer' )
+				__( '監査ログが見つかりませんでした。', 'audit-log-mailer-for-allinonesecurity' )
 			);
 		}
 
@@ -82,7 +82,7 @@ class AIOS_ALM_CSV_Generator {
 		if ( empty( $filtered_logs ) ) {
 			return new WP_Error(
 				'no_data',
-				__( '指定期間内に監査ログが見つかりませんでした。', 'aios-audit-log-mailer' )
+				__( '指定期間内に監査ログが見つかりませんでした。', 'audit-log-mailer-for-allinonesecurity' )
 			);
 		}
 
@@ -115,12 +115,12 @@ class AIOS_ALM_CSV_Generator {
 		// CSVヘッダー
 		$header = array(
 			'ID',
-			__( '日時', 'aios-audit-log-mailer' ),
-			__( 'ユーザー名', 'aios-audit-log-mailer' ),
-			__( 'IPアドレス', 'aios-audit-log-mailer' ),
-			__( 'レベル', 'aios-audit-log-mailer' ),
-			__( 'イベントタイプ', 'aios-audit-log-mailer' ),
-			__( '詳細', 'aios-audit-log-mailer' ),
+			__( '日時', 'audit-log-mailer-for-allinonesecurity' ),
+			__( 'ユーザー名', 'audit-log-mailer-for-allinonesecurity' ),
+			__( 'IPアドレス', 'audit-log-mailer-for-allinonesecurity' ),
+			__( 'レベル', 'audit-log-mailer-for-allinonesecurity' ),
+			__( 'イベントタイプ', 'audit-log-mailer-for-allinonesecurity' ),
+			__( '詳細', 'audit-log-mailer-for-allinonesecurity' ),
 		);
 		$csv_content .= $this->array_to_csv_line( $header );
 
@@ -150,7 +150,7 @@ class AIOS_ALM_CSV_Generator {
 		if ( ! $wp_filesystem->put_contents( $filepath, $csv_content, FS_CHMOD_FILE ) ) {
 			return new WP_Error(
 				'file_creation_failed',
-				__( 'CSVファイルの作成に失敗しました。', 'aios-audit-log-mailer' )
+				__( 'CSVファイルの作成に失敗しました。', 'audit-log-mailer-for-allinonesecurity' )
 			);
 		}
 
@@ -219,10 +219,10 @@ class AIOS_ALM_CSV_Generator {
 	 */
 	private function format_level( $level ) {
 		$levels = array(
-			'info'    => __( '情報', 'aios-audit-log-mailer' ),
-			'warning' => __( '警告', 'aios-audit-log-mailer' ),
-			'error'   => __( 'エラー', 'aios-audit-log-mailer' ),
-			'critical' => __( '重大', 'aios-audit-log-mailer' ),
+			'info'    => __( '情報', 'audit-log-mailer-for-allinonesecurity' ),
+			'warning' => __( '警告', 'audit-log-mailer-for-allinonesecurity' ),
+			'error'   => __( 'エラー', 'audit-log-mailer-for-allinonesecurity' ),
+			'critical' => __( '重大', 'audit-log-mailer-for-allinonesecurity' ),
 		);
 
 		return isset( $levels[ $level ] ) ? $levels[ $level ] : $level;

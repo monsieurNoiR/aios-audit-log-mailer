@@ -1,4 +1,4 @@
-=== All in One Security Audit Log Mailer ===
+=== Audit Log Mailer for All in One Security ===
 Contributors: studionoir
 Tags: security, audit log, email, export, all-in-one-security
 Requires at least: 5.0

@@ -30,7 +30,7 @@ class AIOS_ALM_Email_Sender {
 		if ( empty( $recipients ) ) {
 			return new WP_Error(
 				'invalid_email',
-				__( '有効なメールアドレスが指定されていません。', 'aios-audit-log-mailer' )
+				__( '有効なメールアドレスが指定されていません。', 'audit-log-mailer-for-allinonesecurity' )
 			);
 		}
 
@@ -38,14 +38,14 @@ class AIOS_ALM_Email_Sender {
 		if ( ! file_exists( $csv_file_path ) ) {
 			return new WP_Error(
 				'file_not_found',
-				__( 'CSVファイルが見つかりません。', 'aios-audit-log-mailer' )
+				__( 'CSVファイルが見つかりません。', 'audit-log-mailer-for-allinonesecurity' )
 			);
 		}
 
 		// メール件名
 		/* translators: %1$s: Site name, %2$s: Report month */
 		$subject = sprintf(
-			__( '[%1$s] All in One Security 監査ログレポート - %2$s', 'aios-audit-log-mailer' ),
+			__( '[%1$s] All in One Security 監査ログレポート - %2$s', 'audit-log-mailer-for-allinonesecurity' ),
 			sanitize_text_field( get_bloginfo( 'name' ) ),
 			date_i18n( 'Y年m月', current_time( 'timestamp' ) )
 		);
@@ -70,7 +70,7 @@ class AIOS_ALM_Email_Sender {
 		if ( ! $sent ) {
 			return new WP_Error(
 				'mail_send_failed',
-				__( 'メール送信に失敗しました。SMTPの設定を確認してください。', 'aios-audit-log-mailer' )
+				__( 'メール送信に失敗しました。SMTPの設定を確認してください。', 'audit-log-mailer-for-allinonesecurity' )
 			);
 		}
 
